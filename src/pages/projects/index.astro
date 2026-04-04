@@ -25,7 +25,7 @@ const description = "The tools and experiments currently orbiting the oops-rs un
           projects.map((project) => (
             <a
               href={`/projects/${project.slug}`}
-              class="project-row"
+              class:list={["project-row", project.status === "private" && "project-row--private"]}
               style={`--card-primary:${project.primaryColor}; --card-secondary:${project.secondaryColor}; --card-accent:${project.accentColor};`}
             >
               <div class="project-row__swatch"></div>

@@ -7,11 +7,12 @@ type Props = {
 };
 
 const { project, index } = Astro.props;
+const isPrivate = project.status === "private";
 ---
 
 <a
   href={`/projects/${project.slug}`}
-  class="orbit-card"
+  class:list={["orbit-card", isPrivate && "orbit-card--private"]}
   style={`--card-primary:${project.primaryColor}; --card-secondary:${project.secondaryColor}; --card-accent:${project.accentColor}; --delay:${index * 120}ms;`}
 >
   <div class="orbit-card__halo"></div>
@@ -22,4 +23,5 @@ const { project, index } = Astro.props;
     <span>{project.motif}</span>
     <span>{project.status}</span>
   </div>
+  {isPrivate && <span class="orbit-card__private-stamp">private repo</span>}
 </a>

@@ -12,6 +12,18 @@ const description =
 
 <BaseLayout title={title} description={description}>
   <div class="page-shell">
+    <div class="intro-sequence" aria-hidden="true">
+      <div class="intro-sequence__panel">
+        <p class="intro-sequence__status">Boot sequence / delightful malfunction</p>
+        <div class="intro-sequence__script">
+          <h2 class="intro-line intro-line--one">Oops, something went wrong.</h2>
+          <h2 class="intro-line intro-line--two">Good.</h2>
+          <h2 class="intro-line intro-line--three">Welcome to oops-rs.</h2>
+        </div>
+        <p class="intro-sequence__subtext">The elegant failure mode was the front door all along.</p>
+      </div>
+    </div>
+
     <SiteHeader />
 
     <main>
@@ -20,7 +32,20 @@ const description =
         <div class="hero__grid"></div>
         <div class="hero__copy">
           <p class="eyebrow">Official website of the oops-rs GitHub organization</p>
-          <h1>Rust tools with confetti in their bloodstream.</h1>
+          <h1 class="hero-title" aria-label="Rust tools with confetti in their bloodstream.">
+            <span class="hero-title__line hero-title__line--top">
+              <span class="hero-title__chunk hero-title__chunk--rust" data-text="Rust">Rust</span>
+              <span class="hero-title__chunk hero-title__chunk--tools" data-text="tools">tools</span>
+              <span class="hero-title__chunk hero-title__chunk--with" data-text="with">with</span>
+            </span>
+            <span class="hero-title__line hero-title__line--bottom">
+              <span class="hero-title__chunk hero-title__chunk--confetti" data-text="confetti">confetti</span>
+              <span class="hero-title__chunk hero-title__chunk--intheir" data-text="in their">in their</span>
+              <span class="hero-title__chunk hero-title__chunk--bloodstream" data-text="bloodstream.">
+                bloodstream.
+              </span>
+            </span>
+          </h1>
           <p class="hero__lede">
             We build sharp instruments for agents, code, localization, sandboxes, and the
             little infrastructure spells that make real systems less miserable.
