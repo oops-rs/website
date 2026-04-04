@@ -430,8 +430,10 @@ p {
   display: block;
   width: fit-content;
   max-width: 100%;
-  color: rgba(248, 242, 255, 0.86);
-  text-shadow: 0.012em 0.012em 0 rgba(17, 10, 29, 0.55);
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow:
+    0 0 0 rgba(0, 0, 0, 0),
+    0.01em 0.01em 0 rgba(17, 10, 29, 0.26);
 }
 
 .hero__lede-chunk::before,
@@ -443,31 +445,31 @@ p {
 }
 
 .hero__lede-chunk::before {
-  color: rgba(31, 22, 49, 0.2);
-  transform: translate(0.012em, 0.012em);
-  clip-path: polygon(0 0, 100% 0, 100% 54%, 0 70%);
+  color: rgba(31, 22, 49, 0.12);
+  transform: translate(0.006em, 0.008em);
+  clip-path: polygon(0 0, 100% 0, 100% 58%, 0 71%);
 }
 
 .hero__lede-chunk::after {
-  color: rgba(10, 9, 22, 0.28);
-  transform: translate(-0.014em, 0.016em);
-  clip-path: polygon(0 60%, 100% 46%, 100% 100%, 0 100%);
+  color: rgba(10, 9, 22, 0.14);
+  transform: translate(-0.008em, 0.01em);
+  clip-path: polygon(0 63%, 100% 49%, 100% 100%, 0 100%);
 }
 
 .hero__lede-chunk--one {
-  transform: rotate(-1.1deg) translateX(-0.02rem);
+  transform: rotate(-0.45deg) translateX(-0.01rem);
 }
 
 .hero__lede-chunk--two {
-  transform: rotate(0.7deg) translateX(0.55rem);
+  transform: rotate(0.28deg) translateX(0.3rem);
 }
 
 .hero__lede-chunk--three {
-  transform: rotate(-0.9deg) translateX(0.15rem);
+  transform: rotate(-0.35deg) translateX(0.08rem);
 }
 
 .hero__lede-chunk--four {
-  transform: rotate(0.5deg) translateX(0.85rem);
+  transform: rotate(0.18deg) translateX(0.42rem);
 }
 
 .hero__actions,
