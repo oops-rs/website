@@ -1,0 +1,49 @@
+---
+import FooterCta from "../../components/FooterCta.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects } from "../../data/projects";
+
+const title = "Projects | oops-rs";
+const description = "The tools and experiments currently orbiting the oops-rs universe.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page-shell page-shell--inner">
+    <SiteHeader />
+    <main class="subpage">
+      <section class="subpage-hero">
+        <p class="eyebrow">Directory</p>
+        <h1>The project corridor</h1>
+        <p>
+          Each project solves a concrete problem. Each one still gets to be a little theatrical.
+        </p>
+      </section>
+
+      <section class="project-list">
+        {
+          projects.map((project) => (
+            <a
+              href={`/projects/${project.slug}`}
+              class="project-row"
+              style={`--card-primary:${project.primaryColor}; --card-secondary:${project.secondaryColor}; --card-accent:${project.accentColor};`}
+            >
+              <div class="project-row__swatch"></div>
+              <div class="project-row__content">
+                <p class="project-row__status">{project.status}</p>
+                <h2>{project.name}</h2>
+                <p>{project.tagline}</p>
+              </div>
+              <div class="project-row__detail">
+                <span>{project.motif}</span>
+                <strong>Open artifact</strong>
+              </div>
+            </a>
+          ))
+        }
+      </section>
+
+      <FooterCta />
+    </main>
+  </div>
+</BaseLayout>

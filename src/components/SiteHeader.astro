@@ -1,0 +1,36 @@
+---
+const pathname = Astro.url.pathname;
+const links = [
+  { href: "/", label: "Universe" },
+  { href: "/projects", label: "Projects" },
+  { href: "https://github.com/oops-rs", label: "GitHub", external: true }
+];
+---
+
+<header class="site-header">
+  <a class="brand" href="/">
+    <img src="/oops-rs-mark.png" alt="oops-rs" width="48" height="48" />
+    <span>
+      <strong>oops-rs</strong>
+      <small>fast systems. rust inside. oops outside.</small>
+    </span>
+  </a>
+
+  <nav aria-label="Primary">
+    {
+      links.map((link) => {
+        const active = !link.external && pathname === link.href;
+        return (
+          <a
+            href={link.href}
+            class:list={[active && "active"]}
+            target={link.external ? "_blank" : undefined}
+            rel={link.external ? "noreferrer" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+</header>

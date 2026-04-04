@@ -1,0 +1,111 @@
+---
+import FooterCta from "../components/FooterCta.astro";
+import ProjectOrbit from "../components/ProjectOrbit.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+
+const title = "oops-rs | a joyful Rust tool universe";
+const description =
+  "Official website for the oops-rs GitHub organization: strange, joyous, and full of fast Rust tools for code intelligence, agents, localization, sandboxes, and more.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page-shell">
+    <SiteHeader />
+
+    <main>
+      <section class="hero">
+        <div class="hero__veil"></div>
+        <div class="hero__grid"></div>
+        <div class="hero__copy">
+          <p class="eyebrow">Official website of the oops-rs GitHub organization</p>
+          <h1>Rust tools with confetti in their bloodstream.</h1>
+          <p class="hero__lede">
+            We build sharp instruments for agents, code, localization, sandboxes, and the
+            little infrastructure spells that make real systems less miserable.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--solid" href="/projects">Explore the universe</a>
+            <a class="button button--ghost" href="https://github.com/oops-rs" target="_blank" rel="noreferrer">
+              Open GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="hero__stage" aria-hidden="true">
+          <div class="hero__core"></div>
+          <div class="hero__ring hero__ring--one"></div>
+          <div class="hero__ring hero__ring--two"></div>
+          <div class="hero__ring hero__ring--three"></div>
+          <div class="hero__shard hero__shard--a"></div>
+          <div class="hero__shard hero__shard--b"></div>
+          <div class="hero__shard hero__shard--c"></div>
+          <img class="hero__mark" src="/oops-rs-mark.png" alt="" width="460" height="460" />
+        </div>
+      </section>
+
+      <section class="manifesto">
+        <div>
+          <p class="eyebrow">The feeling</p>
+          <h2>This is not a normal official website.</h2>
+        </div>
+        <p>
+          It is a bright machine hall. A launch bay. A surreal little cosmos for tools that do
+          serious work without needing to dress like accountants.
+        </p>
+        <p>
+          The point is not to look eccentric. The point is to let the energy of the tools show:
+          exacting internals, playful surfaces, and a bias toward shipping things that genuinely
+          help.
+        </p>
+      </section>
+
+      <section class="constellation">
+        <div class="section-heading">
+          <p class="eyebrow">Project constellation</p>
+          <h2>Every object in the room is alive enough to click.</h2>
+        </div>
+
+        <div class="orbit-grid">
+          {projects.map((project, index) => <ProjectOrbit project={project} index={index} />)}
+        </div>
+      </section>
+
+      <section class="corridor">
+        <div class="corridor__panel">
+          <p class="eyebrow">What lives here</p>
+          <h2>Code intelligence, agent runtimes, localization machinery, boundary magic.</h2>
+        </div>
+        <div class="corridor__list">
+          <article>
+            <span>01</span>
+            <h3>Tools that face real workflows</h3>
+            <p>
+              The projects are built for use, not pitch decks: CI, code graphs, asset parsing,
+              translators, gatekeepers, runtimes.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Rust as the internal skeleton</h3>
+            <p>
+              Performance, control, strong types, and fewer runtime surprises. The aesthetic can
+              dance because the internals are grounded.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Small enough to be human</h3>
+            <p>
+              Even the weirder tools still explain themselves. You should land here curious, not
+              confused.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <FooterCta />
+    </main>
+  </div>
+</BaseLayout>

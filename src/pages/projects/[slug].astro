@@ -1,0 +1,74 @@
+---
+import FooterCta from "../../components/FooterCta.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects } from "../../data/projects";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+
+if (!project) {
+  return Astro.redirect("/projects");
+}
+
+const title = `${project.name} | oops-rs`;
+const description = project.longDescription;
+---
+
+<BaseLayout title={title} description={description}>
+  <div
+    class="page-shell page-shell--inner"
+    style={`--detail-primary:${project.primaryColor}; --detail-secondary:${project.secondaryColor}; --detail-accent:${project.accentColor};`}
+  >
+    <SiteHeader />
+
+    <main class="project-detail">
+      <section class="detail-hero">
+        <div class="detail-hero__backdrop"></div>
+        <p class="eyebrow">Project artifact</p>
+        <h1>{project.name}</h1>
+        <p class="detail-hero__tagline">{project.tagline}</p>
+        <p class="detail-hero__body">{project.longDescription}</p>
+        <div class="detail-hero__actions">
+          <a class="button button--solid" href={project.repoUrl} target="_blank" rel="noreferrer">
+            Open repository
+          </a>
+          <a class="button button--ghost" href="/projects">
+            Back to all projects
+          </a>
+        </div>
+      </section>
+
+      <section class="detail-columns">
+        <article>
+          <p class="eyebrow">Capabilities</p>
+          <ul>
+            {project.capabilities.map((capability) => <li>{capability}</li>)}
+          </ul>
+        </article>
+        <article>
+          <p class="eyebrow">Try it like this</p>
+          <ul class="command-list">
+            {project.commands.map((command) => <li><code>{command}</code></li>)}
+          </ul>
+        </article>
+        <article>
+          <p class="eyebrow">Identity</p>
+          <ul>
+            <li>{project.motif}</li>
+            <li>{project.orbitLabel}</li>
+            <li>Status: {project.status}</li>
+          </ul>
+        </article>
+      </section>
+
+      <FooterCta />
+    </main>
+  </div>
+</BaseLayout>

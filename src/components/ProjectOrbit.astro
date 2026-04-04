@@ -1,0 +1,25 @@
+---
+import type { Project } from "../data/projects";
+
+type Props = {
+  project: Project;
+  index: number;
+};
+
+const { project, index } = Astro.props;
+---
+
+<a
+  href={`/projects/${project.slug}`}
+  class="orbit-card"
+  style={`--card-primary:${project.primaryColor}; --card-secondary:${project.secondaryColor}; --card-accent:${project.accentColor}; --delay:${index * 120}ms;`}
+>
+  <div class="orbit-card__halo"></div>
+  <p class="orbit-card__label">{project.orbitLabel}</p>
+  <h3>{project.name}</h3>
+  <p class="orbit-card__tagline">{project.tagline}</p>
+  <div class="orbit-card__meta">
+    <span>{project.motif}</span>
+    <span>{project.status}</span>
+  </div>
+</a>
