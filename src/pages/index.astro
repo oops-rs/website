@@ -133,4 +133,46 @@ const description =
       <FooterCta />
     </main>
   </div>
+
+  <script is:inline>
+    const card = document.querySelector('[data-private-runner="true"]');
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (card instanceof HTMLElement && !prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+      let rafId = 0;
+
+      const resetCard = () => {
+        card.style.setProperty("--runner-x", "0px");
+        card.style.setProperty("--runner-y", "0px");
+      };
+
+      const moveCard = (event) => {
+        if (rafId) cancelAnimationFrame(rafId);
+
+        rafId = requestAnimationFrame(() => {
+          const rect = card.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const dx = event.clientX - centerX;
+          const dy = event.clientY - centerY;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance > 220) {
+            resetCard();
+            return;
+          }
+
+          const strength = (220 - distance) / 220;
+          const escapeX = Math.max(-90, Math.min(90, (-dx / Math.max(distance, 1)) * 90 * strength));
+          const escapeY = Math.max(-42, Math.min(42, (-dy / Math.max(distance, 1)) * 42 * strength));
+
+          card.style.setProperty("--runner-x", `${escapeX}px`);
+          card.style.setProperty("--runner-y", `${escapeY}px`);
+        });
+      };
+
+      window.addEventListener("pointermove", moveCard);
+      window.addEventListener("pointerleave", resetCard);
+    }
+  </script>
 </BaseLayout>

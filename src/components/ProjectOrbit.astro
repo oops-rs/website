@@ -13,6 +13,7 @@ const isPrivate = project.status === "private";
 <a
   href={`/projects/${project.slug}`}
   class:list={["orbit-card", isPrivate && "orbit-card--private"]}
+  data-private-runner={isPrivate ? "true" : undefined}
   style={`--card-primary:${project.primaryColor}; --card-secondary:${project.secondaryColor}; --card-accent:${project.accentColor}; --delay:${index * 120}ms;`}
 >
   <div class="orbit-card__halo"></div>
