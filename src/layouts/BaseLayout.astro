@@ -8,6 +8,13 @@ type Props = {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const markPool = [
+  "/members/aha-avatar.png",
+  "/members/tzeentch-avatar.png",
+  "/members/jester-circle.png",
+  "/members/raven-avatar.png",
+  "/members/jester-logo.png"
+];
 ---
 
 <!doctype html>
@@ -18,7 +25,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/png" href="/og-cover.png" />
+    <link rel="icon" type="image/png" href="/og-cover.png" data-session-favicon />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -35,5 +42,32 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <slot />
+
+    <script is:inline define:vars={{ markPool }}>
+      const markSessionKey = "oops-rs:session-mark";
+      const markNodes = Array.from(document.querySelectorAll("[data-session-mark]"));
+      const favicon = document.querySelector("[data-session-favicon]");
+
+      try {
+        let selectedMark = window.sessionStorage.getItem(markSessionKey);
+
+        if (!selectedMark || !markPool.includes(selectedMark)) {
+          selectedMark = markPool[Math.floor(Math.random() * markPool.length)];
+          window.sessionStorage.setItem(markSessionKey, selectedMark);
+        }
+
+        for (const node of markNodes) {
+          if (node instanceof HTMLImageElement) {
+            node.src = selectedMark;
+          }
+        }
+
+        if (favicon instanceof HTMLLinkElement) {
+          favicon.href = selectedMark;
+        }
+      } catch {
+        // Keep the default art if session storage is unavailable.
+      }
+    </script>
   </body>
 </html>
