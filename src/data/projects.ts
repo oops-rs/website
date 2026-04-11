@@ -72,6 +72,42 @@ export const projects: Project[] = [
     capabilities: ["Persistent runtime state", "Tool execution primitives", "Provider abstraction"]
   },
   {
+    slug: "crab-code",
+    name: "crab-code",
+    tagline: "A Claude Code–class coding agent, forged in Rust on the Mentra runtime.",
+    longDescription:
+      "Crab Code is a terminal coding assistant with the same instincts as Claude Code, written in Rust on top of Mentra. It supports Anthropic, OpenAI, Gemini, and OpenRouter, ships an interactive REPL and TUI, and keeps session and tool state across runs.",
+    repoUrl: "https://github.com/oops-rs/crab-code",
+    status: "private",
+    primaryColor: "#ff5a5f",
+    secondaryColor: "#ff9aa2",
+    accentColor: "#ffd9dc",
+    motif: "Red shell, sharp pincers",
+    orbitLabel: "A coding agent at terminal speed",
+    commands: ["cargo install --path cli", "crab-code", "crab-code tui"],
+    capabilities: ["Interactive REPL and TUI", "Multi-provider (Anthropic, OpenAI, Gemini, OpenRouter)", "Session and tool inspection"]
+  },
+  {
+    slug: "fuli",
+    name: "fuli",
+    tagline: "A Rust-native memory core for terminal coding agents.",
+    longDescription:
+      "Fuli is a typed memory system for terminal coding agents, usable as an embeddable library, an operator CLI, or a daemon with an MCP server for clients like Codex and Claude Code. It stores episodic, semantic, procedural, and working memories through a store-agnostic engine with SQLite persistence and bounded recall.",
+    repoUrl: "https://github.com/oops-rs/fuli",
+    status: "private",
+    primaryColor: "#2cc7a0",
+    secondaryColor: "#ffd166",
+    accentColor: "#d0f5e8",
+    motif: "Lantern archive of quiet recall",
+    orbitLabel: "Gives coding agents a memory",
+    commands: ["fuli daemon", "fuli remember <fact>", "fuli recall 'token'"],
+    capabilities: [
+      "Typed memory: episodic, semantic, procedural, working",
+      "MCP server for external clients",
+      "SQLite-backed bounded recall"
+    ]
+  },
+  {
     slug: "qlipoth",
     name: "qlipoth",
     tagline: "A permission-aware sandbox that watches commands like a luminous judge.",
@@ -88,6 +124,22 @@ export const projects: Project[] = [
     capabilities: ["Sandboxed command execution", "Policy presets", "Interactive gate mediation"]
   },
   {
+    slug: "oronyx",
+    name: "oronyx",
+    tagline: "A developer-first clipboard engine with a durable local history.",
+    longDescription:
+      "Oronyx turns clipboard activity into a persistent local log with a terminal-first workflow for search, pinning, and scripting. The `oron` CLI talks to a background `orond` daemon backed by `oronyx-core` and a local store, so clipboard history outlives OS state and can be driven from the shell.",
+    repoUrl: "https://github.com/oops-rs/oronyx",
+    status: "private",
+    primaryColor: "#8a5cf6",
+    secondaryColor: "#4cc9f0",
+    accentColor: "#e8dfff",
+    motif: "Obsidian archive of fleeting things",
+    orbitLabel: "Remembers what you copied",
+    commands: ["oron search 'token'", "oron pin <id>", "oron copy <id>"],
+    capabilities: ["Daemon-backed clipboard history", "Dashboard picker with shell insertion", "Scriptable CLI workflows"]
+  },
+  {
     slug: "xcassets",
     name: "xcassets",
     tagline: "A small precise blade for parsing Xcode asset catalogs.",
@@ -102,6 +154,22 @@ export const projects: Project[] = [
     orbitLabel: "Reads the hidden anatomy of assets",
     commands: ["cargo add xcassets", "use xcassets::parser", "cargo test -p xcassets"],
     capabilities: ["Asset catalog parsing", "Rust-first API", "Foundation for asset tooling"]
+  },
+  {
+    slug: "numi",
+    name: "numi",
+    tagline: "Deterministic code generation for Apple asset and string resources.",
+    longDescription:
+      "Numi is a fast Rust CLI that turns Xcode asset catalogs, localization files, and file lists into generated accessors using built-in or custom Minijinja templates. It's designed for check-in-the-output workflows: generate locally, verify in CI with `numi check`, and orchestrate multi-package repos through `numi.toml`.",
+    repoUrl: "https://github.com/oops-rs/numi",
+    status: "public",
+    primaryColor: "#6aa9ff",
+    secondaryColor: "#a47bff",
+    accentColor: "#d9e8ff",
+    motif: "Typewriter of Apple artifacts",
+    orbitLabel: "Turns resources into typed code",
+    commands: ["cargo install numi", "numi init", "numi generate"],
+    capabilities: ["Asset and localization codegen", "Minijinja custom templates", "CI-verifiable with `numi check`"]
   },
   {
     slug: "tap",
