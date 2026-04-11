@@ -115,6 +115,7 @@ section + section {
 /* Header */
 
 .site-header {
+  width: 100%;
   max-width: var(--col-wide);
   margin: 0 auto;
   padding: 28px 0;
