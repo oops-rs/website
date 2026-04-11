@@ -1,206 +1,115 @@
 ---
 import FooterCta from "../components/FooterCta.astro";
-import ProjectOrbit from "../components/ProjectOrbit.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { projects } from "../data/projects";
 
-const title = "oops-rs | a joyful Rust tool universe";
+const title = "oops-rs — a joyful Rust tool universe";
 const description =
-  "Official website for the oops-rs GitHub organization: strange, joyous, and full of fast Rust tools for code intelligence, agents, localization, sandboxes, and more.";
+  "Official website for the oops-rs GitHub organization: fast Rust tools for code intelligence, agents, localization, sandboxes, and the small infrastructure that makes real systems less miserable.";
+
+const pillars = [
+  {
+    number: "01",
+    title: "Tools that face real workflows",
+    body: "Built for use, not pitch decks — CI, code graphs, asset parsing, translators, gatekeepers, runtimes."
+  },
+  {
+    number: "02",
+    title: "Rust as the internal skeleton",
+    body: "Performance, control, strong types, and fewer runtime surprises. The surface can breathe because the internals are grounded."
+  },
+  {
+    number: "03",
+    title: "Small enough to be human",
+    body: "Even the weirder tools still explain themselves. You should land here curious, not confused."
+  }
+];
 ---
 
 <BaseLayout title={title} description={description}>
   <div class="page-shell">
-    <div class="intro-sequence" aria-hidden="true" data-intro-sequence>
-      <div class="intro-sequence__panel">
-        <p class="intro-sequence__status">Boot sequence / delightful malfunction</p>
-        <div class="intro-sequence__script">
-          <h2 class="intro-line intro-line--one">Oops, something went wrong.</h2>
-          <h2 class="intro-line intro-line--two">Good.</h2>
-          <h2 class="intro-line intro-line--three">Welcome to oops-rs.</h2>
-        </div>
-        <p class="intro-sequence__subtext">The elegant failure mode was the front door all along.</p>
-      </div>
-    </div>
-
     <SiteHeader />
 
     <main>
       <section class="hero">
-        <div class="hero__veil"></div>
-        <div class="hero__grid"></div>
-        <div class="hero__copy">
-          <p class="eyebrow">Official website of the oops-rs GitHub organization</p>
-          <h1 class="hero-title" aria-label="Rust tools with confetti in their bloodstream.">
-            <span class="hero-title__line hero-title__line--top">
-              <span class="hero-title__chunk hero-title__chunk--rust" data-text="Rust">Rust</span>
-              <span class="hero-title__chunk hero-title__chunk--tools" data-text="tools">tools</span>
-              <span class="hero-title__chunk hero-title__chunk--with" data-text="with">with</span>
-            </span>
-            <span class="hero-title__line hero-title__line--bottom">
-              <span class="hero-title__chunk hero-title__chunk--confetti" data-text="confetti">confetti</span>
-              <span class="hero-title__chunk hero-title__chunk--intheir" data-text="in their">in their</span>
-              <span class="hero-title__chunk hero-title__chunk--bloodstream" data-text="bloodstream.">
-                bloodstream.
-              </span>
-            </span>
-          </h1>
-          <p class="hero__lede hero__lede--broken" aria-label="We build sharp instruments for agents, code, localization, sandboxes, and the little infrastructure spells that make real systems less miserable.">
-            <span class="hero__lede-chunk hero__lede-chunk--one" data-text="We build sharp instruments">
-              We build sharp instruments
-            </span>
-            <span class="hero__lede-chunk hero__lede-chunk--two" data-text="for agents, code, localization, sandboxes,">
-              for agents, code, localization, sandboxes,
-            </span>
-            <span class="hero__lede-chunk hero__lede-chunk--three" data-text="and the little infrastructure spells">
-              and the little infrastructure spells
-            </span>
-            <span class="hero__lede-chunk hero__lede-chunk--four" data-text="that make real systems less miserable.">
-              that make real systems less miserable.
-            </span>
-          </p>
-          <div class="hero__actions">
-            <a class="button button--solid" href="/projects">Explore the universe</a>
-            <a class="button button--ghost" href="https://github.com/oops-rs" target="_blank" rel="noreferrer">
-              Open GitHub
-            </a>
-          </div>
-        </div>
-
-        <div class="hero__stage" aria-hidden="true">
-          <div class="hero__core"></div>
-          <div class="hero__ring hero__ring--one"></div>
-          <div class="hero__ring hero__ring--two"></div>
-          <div class="hero__ring hero__ring--three"></div>
-          <div class="hero__shard hero__shard--a"></div>
-          <div class="hero__shard hero__shard--b"></div>
-          <div class="hero__shard hero__shard--c"></div>
-          <img class="hero__mark" src="/members/aha-avatar.png" alt="" width="460" height="460" data-session-mark />
+        <p class="eyebrow fade-in">The oops-rs organization</p>
+        <h1 class="hero-title fade-in delay-1">
+          Rust tools with <em>confetti</em> in their bloodstream.
+        </h1>
+        <p class="hero__lede fade-in delay-2">
+          Sharp instruments for agents, code, localization, sandboxes, and the small
+          infrastructure spells that make real systems less miserable.
+        </p>
+        <div class="hero__actions fade-in delay-2">
+          <a class="button button--solid" href="/projects">
+            Browse projects <span class="arrow">→</span>
+          </a>
+          <a class="button button--ghost" href="https://github.com/oops-rs" target="_blank" rel="noreferrer">
+            Open GitHub <span class="arrow">↗</span>
+          </a>
         </div>
       </section>
 
       <section class="manifesto">
-        <div>
-          <p class="eyebrow">The feeling</p>
-          <h2>This is not a normal official website.</h2>
-        </div>
+        <p class="eyebrow">The feeling</p>
+        <h2>This is not a normal official website.</h2>
         <p>
-          It is a bright machine hall. A launch bay. A surreal little cosmos for tools that do
-          serious work without needing to dress like accountants.
+          It is a bright machine hall. A launch bay. A place for tools that do serious work
+          without needing to dress like accountants.
         </p>
         <p>
-          The point is not to look eccentric. The point is to let the energy of the tools show:
-          exacting internals, playful surfaces, and a bias toward shipping things that genuinely
-          help.
+          The point is to let the energy of the tools show: exacting internals, playful
+          surfaces, and a bias toward shipping things that genuinely help.
         </p>
       </section>
 
       <section class="constellation">
         <div class="section-heading">
-          <p class="eyebrow">Project constellation</p>
-          <h2>Every object in the room is alive enough to click.</h2>
-          <p class="glitch-note" aria-hidden="true">render drift detected / harmless / continue</p>
+          <p class="eyebrow">Projects</p>
+          <h2>Everything currently in orbit.</h2>
         </div>
 
-        <div class="orbit-grid">
-          {projects.map((project, index) => <ProjectOrbit project={project} index={index} />)}
+        <div class="project-list">
+          {
+            projects.map((project) => (
+              <a
+                href={`/projects/${project.slug}`}
+                class:list={["project-row", project.status === "private" && "project-row--private"]}
+              >
+                <span class="project-row__name">{project.name}</span>
+                <span class="project-row__tagline">{project.tagline}</span>
+                <span class="project-row__meta">
+                  <span class="project-row__status">{project.status}</span>
+                  <span class="arrow">→</span>
+                </span>
+              </a>
+            ))
+          }
         </div>
       </section>
 
-      <section class="corridor">
-        <div class="corridor__panel">
+      <section class="pillars-section">
+        <div class="section-heading">
           <p class="eyebrow">What lives here</p>
           <h2>Code intelligence, agent runtimes, localization machinery, boundary magic.</h2>
         </div>
-        <div class="corridor__list">
-          <article>
-            <span>01</span>
-            <h3>Tools that face real workflows</h3>
-            <p>
-              The projects are built for use, not pitch decks: CI, code graphs, asset parsing,
-              translators, gatekeepers, runtimes.
-            </p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Rust as the internal skeleton</h3>
-            <p>
-              Performance, control, strong types, and fewer runtime surprises. The aesthetic can
-              dance because the internals are grounded.
-            </p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Small enough to be human</h3>
-            <p>
-              Even the weirder tools still explain themselves. You should land here curious, not
-              confused.
-            </p>
-          </article>
+        <div class="pillars">
+          {
+            pillars.map((pillar) => (
+              <article>
+                <span class="pillar__number">{pillar.number}</span>
+                <div>
+                  <h3>{pillar.title}</h3>
+                  <p>{pillar.body}</p>
+                </div>
+              </article>
+            ))
+          }
         </div>
       </section>
 
       <FooterCta />
     </main>
   </div>
-
-  <script is:inline>
-    const intro = document.querySelector("[data-intro-sequence]");
-    const introSeenKey = "oops-rs:intro-seen";
-
-    if (intro instanceof HTMLElement) {
-      try {
-        const hasSeenIntro = window.sessionStorage.getItem(introSeenKey) === "true";
-
-        if (hasSeenIntro) {
-          intro.hidden = true;
-        } else {
-          window.sessionStorage.setItem(introSeenKey, "true");
-        }
-      } catch {
-        // If storage is unavailable, fall back to showing the intro.
-      }
-    }
-
-    const card = document.querySelector('[data-private-runner="true"]');
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (card instanceof HTMLElement && !prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
-      let rafId = 0;
-
-      const resetCard = () => {
-        card.style.setProperty("--runner-x", "0px");
-        card.style.setProperty("--runner-y", "0px");
-      };
-
-      const moveCard = (event) => {
-        if (rafId) cancelAnimationFrame(rafId);
-
-        rafId = requestAnimationFrame(() => {
-          const rect = card.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          const dx = event.clientX - centerX;
-          const dy = event.clientY - centerY;
-          const distance = Math.hypot(dx, dy);
-
-          if (distance > 220) {
-            resetCard();
-            return;
-          }
-
-          const strength = (220 - distance) / 220;
-          const escapeX = Math.max(-90, Math.min(90, (-dx / Math.max(distance, 1)) * 90 * strength));
-          const escapeY = Math.max(-42, Math.min(42, (-dy / Math.max(distance, 1)) * 42 * strength));
-
-          card.style.setProperty("--runner-x", `${escapeX}px`);
-          card.style.setProperty("--runner-y", `${escapeY}px`);
-        });
-      };
-
-      window.addEventListener("pointermove", moveCard);
-      window.addEventListener("pointerleave", resetCard);
-    }
-  </script>
 </BaseLayout>

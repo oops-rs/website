@@ -8,13 +8,6 @@ type Props = {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const markPool = [
-  "/members/aha-avatar.png",
-  "/members/tzeentch-avatar.png",
-  "/members/jester-circle.png",
-  "/members/raven-avatar.png",
-  "/members/jester-logo.png"
-];
 ---
 
 <!doctype html>
@@ -25,11 +18,11 @@ const markPool = [
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/png" href="/og-cover.png" data-session-favicon />
+    <link rel="icon" type="image/png" href="/og-cover.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <meta property="og:title" content={title} />
@@ -42,32 +35,5 @@ const markPool = [
   </head>
   <body>
     <slot />
-
-    <script is:inline define:vars={{ markPool }}>
-      const markSessionKey = "oops-rs:session-mark";
-      const markNodes = Array.from(document.querySelectorAll("[data-session-mark]"));
-      const favicon = document.querySelector("[data-session-favicon]");
-
-      try {
-        let selectedMark = window.sessionStorage.getItem(markSessionKey);
-
-        if (!selectedMark || !markPool.includes(selectedMark)) {
-          selectedMark = markPool[Math.floor(Math.random() * markPool.length)];
-          window.sessionStorage.setItem(markSessionKey, selectedMark);
-        }
-
-        for (const node of markNodes) {
-          if (node instanceof HTMLImageElement) {
-            node.src = selectedMark;
-          }
-        }
-
-        if (favicon instanceof HTMLLinkElement) {
-          favicon.href = selectedMark;
-        }
-      } catch {
-        // Keep the default art if session storage is unavailable.
-      }
-    </script>
   </body>
 </html>

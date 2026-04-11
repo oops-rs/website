@@ -12,62 +12,54 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-
-if (!project) {
-  return Astro.redirect("/projects");
-}
-
-const title = `${project.name} | oops-rs`;
+const title = `${project.name} — oops-rs`;
 const description = project.longDescription;
 ---
 
 <BaseLayout title={title} description={description}>
-  <div
-    class="page-shell page-shell--inner"
-    style={`--detail-primary:${project.primaryColor}; --detail-secondary:${project.secondaryColor}; --detail-accent:${project.accentColor};`}
-  >
+  <div class="page-shell">
     <SiteHeader />
 
-    <main class="project-detail">
+    <main>
       <section class="detail-hero">
-        <div class="detail-hero__backdrop"></div>
-        <p class="eyebrow">Project artifact</p>
-        <h1>{project.name}</h1>
-        <p class="detail-hero__tagline">{project.tagline}</p>
-        <p class="detail-hero__body">{project.longDescription}</p>
-        <p class="glitch-note" aria-hidden="true">artifact integrity questionable / function intact</p>
-        <div class="detail-hero__actions">
+        <p class="eyebrow fade-in">Project · {project.status}</p>
+        <h1 class="fade-in delay-1">{project.name}</h1>
+        <p class="detail-hero__tagline fade-in delay-1">{project.tagline}</p>
+        <p class="detail-hero__body fade-in delay-2">{project.longDescription}</p>
+        <div class="detail-hero__actions fade-in delay-2">
           <a class="button button--solid" href={project.repoUrl} target="_blank" rel="noreferrer">
-            Open repository
+            Open repository <span class="arrow">↗</span>
           </a>
           <a class="button button--ghost" href="/projects">
-            Back to all projects
+            <span class="arrow" style="transform: rotate(180deg);">→</span> All projects
           </a>
         </div>
       </section>
 
-      <section class="detail-columns">
-        <article>
-          <p class="eyebrow">Capabilities</p>
+      <div class="detail-sections">
+        <section>
+          <h2>Capabilities</h2>
           <ul>
             {project.capabilities.map((capability) => <li>{capability}</li>)}
           </ul>
-        </article>
-        <article>
-          <p class="eyebrow">Try it like this</p>
+        </section>
+
+        <section>
+          <h2>Try it</h2>
           <ul class="command-list">
-            {project.commands.map((command) => <li><code>{command}</code></li>)}
+            {project.commands.map((command) => <li>{command}</li>)}
           </ul>
-        </article>
-        <article>
-          <p class="eyebrow">Identity</p>
+        </section>
+
+        <section>
+          <h2>Identity</h2>
           <ul>
             <li>{project.motif}</li>
             <li>{project.orbitLabel}</li>
-            <li>Status: {project.status}</li>
+            <li>Status · {project.status}</li>
           </ul>
-        </article>
-      </section>
+        </section>
+      </div>
 
       <FooterCta />
     </main>
