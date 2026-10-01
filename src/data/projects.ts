@@ -122,7 +122,7 @@ export const projects: Project[] = [
     primaryColor: "#ff5a5f",
     secondaryColor: "#ff9aa2",
     accentColor: "#ffd9dc",
-    motif: "Red shell, sharp pincers",
+    motif: "Red shell with sharp pincers",
     orbitLabel: "A coding agent at terminal speed",
     commands: ["cargo install --path cli", "crab-code", "crab-code tui"],
     capabilities: ["Interactive REPL and TUI", "Multi-provider (Anthropic, OpenAI, Gemini, OpenRouter)", "Session and tool inspection"]

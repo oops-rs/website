@@ -1,12 +1,38 @@
+---
+import { publicCount } from "../data/families";
+---
+
 <footer class="footer-cta">
-  <p class="footer-cta__eyebrow">Enter the workshop</p>
-  <h2>Leave with a new instrument.</h2>
-  <div class="footer-cta__actions">
+  <h2>{publicCount} of these are open source.</h2>
+  <p>Star a repo, file an issue, or send a fix. The private ones open up as they grow up.</p>
+  <div class="button-row">
     <a class="button button--solid" href="https://github.com/oops-rs" target="_blank" rel="noreferrer">
-      Visit on GitHub <span class="arrow">↗</span>
+      Open oops-rs on GitHub
     </a>
-    <a class="button button--ghost" href="/projects">
-      Browse projects <span class="arrow">→</span>
-    </a>
+    <a class="button button--ghost" href="/projects">See every project</a>
   </div>
 </footer>
+
+<style>
+  .footer-cta {
+    width: 100%;
+    max-width: var(--col-wide);
+    margin: clamp(96px, 12vw, 160px) auto 0;
+    padding: clamp(48px, 8vw, 88px) 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+
+  h2 {
+    font-size: var(--step-3);
+    max-width: 22ch;
+  }
+
+  p {
+    color: var(--ink-muted);
+    max-width: 48ch;
+    margin-bottom: 8px;
+  }
+</style>

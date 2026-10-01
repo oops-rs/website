@@ -1,0 +1,90 @@
+---
+type Props = {
+  commands: string[];
+};
+
+const { commands } = Astro.props;
+---
+
+<ul class="commands">
+  {
+    commands.map((command) => (
+      <li>
+        <code>{command}</code>
+        <button type="button" data-copy={command} aria-label={`Copy: ${command}`} hidden>
+          Copy
+        </button>
+      </li>
+    ))
+  }
+</ul>
+
+<script>
+  const RESET_AFTER_MS = 1600;
+
+  document.querySelectorAll<HTMLButtonElement>("button[data-copy]").forEach((button) => {
+    if (!navigator.clipboard) {
+      return;
+    }
+    button.hidden = false;
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? "");
+        button.textContent = "Copied";
+      } catch (error) {
+        console.error("Copy to clipboard failed", error);
+        button.textContent = "Copy failed";
+      }
+      window.setTimeout(() => {
+        button.textContent = "Copy";
+      }, RESET_AFTER_MS);
+    });
+  });
+</script>
+
+<style>
+  .commands {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px 10px 16px;
+    background: var(--night-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    min-width: 0;
+  }
+
+  code {
+    flex: 1;
+    font-size: 0.875rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  button {
+    font: 500 var(--step--1) / 1 var(--font-sans);
+    color: var(--ink-muted);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  button[hidden] {
+    display: none;
+  }
+
+  button:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+</style>

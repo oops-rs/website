@@ -1,67 +1,325 @@
 ---
+import CommandList from "../../components/CommandList.astro";
 import FooterCta from "../../components/FooterCta.astro";
+import ProjectRow from "../../components/ProjectRow.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { projects } from "../../data/projects";
+import { families, getFamilyOf } from "../../data/families";
+import type { Project } from "../../data/projects";
+import { readableOn } from "../../lib/color";
 
 export function getStaticPaths() {
-  return projects.map((project) => ({
+  const ordered = families.flatMap((family) => family.projects);
+  return ordered.map((project, index) => ({
     params: { slug: project.slug },
-    props: { project }
+    props: {
+      project,
+      previous: ordered[(index - 1 + ordered.length) % ordered.length],
+      next: ordered[(index + 1) % ordered.length]
+    }
   }));
 }
 
-const { project } = Astro.props;
+type Props = {
+  project: Project;
+  previous: Project;
+  next: Project;
+};
+
+const { project, previous, next } = Astro.props;
+const family = getFamilyOf(project.slug);
+const siblings = family.projects.filter((candidate) => candidate.slug !== project.slug);
+const isPublic = project.status === "public";
 const title = `${project.name} — oops-rs`;
-const description = project.longDescription;
+const theme = [
+  `--p1: ${project.primaryColor}`,
+  `--p2: ${project.secondaryColor}`,
+  `--p3: ${project.accentColor}`,
+  `--p1-ink: ${readableOn(project.primaryColor)}`
+].join("; ");
 ---
 
-<BaseLayout title={title} description={description}>
-  <div class="page-shell">
+<BaseLayout title={title} description={project.longDescription}>
+  <div class="page-shell" style={theme}>
     <SiteHeader />
 
     <main>
       <section class="detail-hero">
-        <p class="eyebrow fade-in">Project · {project.status}</p>
-        <h1 class="fade-in delay-1">{project.name}</h1>
-        <p class="detail-hero__tagline fade-in delay-1">{project.tagline}</p>
-        <p class="detail-hero__body fade-in delay-2">{project.longDescription}</p>
-        <div class="detail-hero__actions fade-in delay-2">
-          <a class="button button--solid" href={project.repoUrl} target="_blank" rel="noreferrer">
-            Open repository <span class="arrow">↗</span>
-          </a>
-          <a class="button button--ghost" href="/projects">
-            <span class="arrow" style="transform: rotate(180deg);">→</span> All projects
-          </a>
+        <div class="palette" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <p class="detail-hero__context">
+          <a href={`/projects#${family.id}`}>{family.name}</a>
+          <span>{isPublic ? "Open source" : "Private repository"}</span>
+        </p>
+        <h1 class="project-name">{project.name}</h1>
+        <p class="detail-hero__tagline">{project.tagline}</p>
+        <p class="detail-hero__body">{project.longDescription}</p>
+        <div class="button-row">
+          {
+            isPublic ? (
+              <a class="button button--project" href={project.repoUrl} target="_blank" rel="noreferrer">
+                View {project.name} on GitHub
+              </a>
+            ) : (
+              <p class="detail-hero__private">The source isn't public yet. This page tracks what it does today.</p>
+            )
+          }
         </div>
       </section>
 
       <div class="detail-sections">
         <section>
-          <h2>Capabilities</h2>
-          <ul>
+          <h2>What it does</h2>
+          <ul class="capabilities">
             {project.capabilities.map((capability) => <li>{capability}</li>)}
           </ul>
         </section>
 
         <section>
           <h2>Try it</h2>
-          <ul class="command-list">
-            {project.commands.map((command) => <li>{command}</li>)}
-          </ul>
+          <CommandList commands={project.commands} />
         </section>
 
         <section>
-          <h2>Identity</h2>
-          <ul>
-            <li>{project.motif}</li>
-            <li>{project.orbitLabel}</li>
-            <li>Status · {project.status}</li>
-          </ul>
+          <h2>Character</h2>
+          <p class="character">
+            {project.orbitLabel}
+            <span>{project.motif}</span>
+          </p>
         </section>
       </div>
+
+      {
+        siblings.length > 0 && (
+          <section class="related">
+            <h2>More in {family.name.toLowerCase()}</h2>
+            <ul>
+              {siblings.map((sibling) => (
+                <ProjectRow project={sibling} />
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <nav class="pager" aria-label="Browse projects">
+        <a href={`/projects/${previous.slug}`} style={`--swatch: ${previous.primaryColor}`}>
+          <span>Previous</span>
+          <strong class="project-name">{previous.name}</strong>
+        </a>
+        <a href={`/projects/${next.slug}`} style={`--swatch: ${next.primaryColor}`}>
+          <span>Next</span>
+          <strong class="project-name">{next.name}</strong>
+        </a>
+      </nav>
 
       <FooterCta />
     </main>
   </div>
 </BaseLayout>
+
+<style>
+  .detail-hero {
+    padding: clamp(48px, 9vw, 104px) 0 clamp(32px, 5vw, 48px);
+    max-width: 720px;
+  }
+
+  .palette {
+    display: flex;
+    height: 14px;
+    width: min(320px, 70%);
+    margin-bottom: 32px;
+    border-radius: 3px;
+    overflow: hidden;
+    transform-origin: left;
+    animation: draw 600ms var(--ease) both;
+  }
+
+  .palette span:nth-child(1) {
+    flex: 6;
+    background: var(--p1);
+  }
+
+  .palette span:nth-child(2) {
+    flex: 3;
+    background: var(--p2);
+  }
+
+  .palette span:nth-child(3) {
+    flex: 1;
+    background: var(--p3);
+  }
+
+  .detail-hero__context {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: 0.9375rem;
+    color: var(--ink-muted);
+    margin-bottom: 14px;
+  }
+
+  .detail-hero__context a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 4px;
+  }
+
+  .detail-hero__context a:hover {
+    text-decoration-color: var(--p1);
+  }
+
+  .detail-hero h1 {
+    font-size: var(--step-4);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .detail-hero__tagline {
+    font-size: var(--step-1);
+    line-height: 1.4;
+    max-width: 36ch;
+    margin-bottom: 20px;
+  }
+
+  .detail-hero__body {
+    color: var(--ink-muted);
+    max-width: 64ch;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .detail-hero__private {
+    color: var(--ink-muted);
+    padding-left: 14px;
+    border-left: 3px solid var(--p1);
+  }
+
+  .button--project {
+    background: var(--p1);
+    color: var(--p1-ink);
+  }
+
+  .button--project:hover {
+    background: var(--p2);
+    color: var(--night);
+  }
+
+  .detail-sections {
+    border-top: 1px solid var(--line);
+  }
+
+  .detail-sections section {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px clamp(16px, 4vw, 48px);
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .detail-sections h2 {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    letter-spacing: 0;
+    padding-top: 3px;
+  }
+
+  .capabilities {
+    display: grid;
+    gap: 10px;
+  }
+
+  .capabilities li {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .capabilities li::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--p1);
+  }
+
+  .character {
+    display: grid;
+    gap: 4px;
+    font-size: 1.0625rem;
+  }
+
+  .character span {
+    color: var(--ink-muted);
+    font-size: 0.9375rem;
+  }
+
+  .related {
+    margin-top: clamp(56px, 8vw, 88px);
+  }
+
+  .related h2 {
+    font-size: var(--step-2);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .pager {
+    margin-top: clamp(40px, 6vw, 64px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .pager a {
+    display: grid;
+    gap: 4px;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--swatch);
+    border-radius: var(--radius-sm);
+    transition: background 140ms var(--ease);
+  }
+
+  .pager a:last-child {
+    text-align: right;
+    border-left-width: 1px;
+    border-left-color: var(--line);
+    border-right: 4px solid var(--swatch);
+  }
+
+  .pager a:hover {
+    background: var(--night-raised);
+  }
+
+  .pager span {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  .pager strong {
+    font-size: 1.0625rem;
+  }
+
+  @keyframes draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .detail-sections section {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

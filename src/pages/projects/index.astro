@@ -1,46 +1,188 @@
 ---
 import FooterCta from "../../components/FooterCta.astro";
+import ProjectRow from "../../components/ProjectRow.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { families, publicCount } from "../../data/families";
 import { projects } from "../../data/projects";
 
 const title = "Projects — oops-rs";
-const description = "The tools and experiments currently orbiting the oops-rs universe.";
+const description = `All ${projects.length} oops-rs projects, grouped by family.`;
+
+const filters = [
+  { value: "all", label: "All", count: projects.length },
+  { value: "public", label: "Open source", count: publicCount },
+  { value: "private", label: "Private", count: projects.length - publicCount }
+];
 ---
 
 <BaseLayout title={title} description={description}>
   <div class="page-shell">
     <SiteHeader />
     <main>
-      <section class="subpage-hero">
-        <p class="eyebrow fade-in">Directory</p>
-        <h1 class="fade-in delay-1">Projects</h1>
-        <p class="fade-in delay-2">
-          Each project solves a concrete problem. Each one still gets to be a little theatrical.
+      <section class="intro">
+        <h1>Projects</h1>
+        <p>
+          {projects.length} projects in five families. Open-source ones link straight to their
+          repository; private ones are still taking shape.
         </p>
       </section>
 
-      <section>
-        <div class="project-list">
-          {
-            projects.map((project) => (
-              <a
-                href={`/projects/${project.slug}`}
-                class:list={["project-row", project.status === "private" && "project-row--private"]}
-              >
-                <span class="project-row__name">{project.name}</span>
-                <span class="project-row__tagline">{project.tagline}</span>
-                <span class="project-row__meta">
-                  <span class="project-row__status">{project.status}</span>
-                  <span class="arrow">→</span>
-                </span>
-              </a>
-            ))
-          }
-        </div>
-      </section>
+      <div class="filter" role="group" aria-label="Show projects" hidden>
+        {
+          filters.map((filter) => (
+            <button type="button" data-filter={filter.value} aria-pressed={filter.value === "all" ? "true" : "false"}>
+              {filter.label}
+              <span>{filter.count}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="directory" data-show="all">
+        {
+          families.map((family) => (
+            <section class="family" id={family.id} aria-labelledby={`${family.id}-heading`}>
+              <header>
+                <h2 id={`${family.id}-heading`}>{family.name}</h2>
+                <p>{family.blurb}</p>
+              </header>
+              <ul>
+                {family.projects.map((project) => (
+                  <ProjectRow project={project} />
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
 
       <FooterCta />
     </main>
   </div>
 </BaseLayout>
+
+<script>
+  const FILTERS = ["all", "public", "private"];
+  const directory = document.querySelector<HTMLElement>(".directory");
+  const group = document.querySelector<HTMLElement>(".filter");
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filter button"));
+
+  function apply(value: string) {
+    const filter = FILTERS.includes(value) ? value : "all";
+    if (directory) {
+      directory.dataset.show = filter;
+    }
+    buttons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
+    });
+    const url = new URL(window.location.href);
+    if (filter === "all") {
+      url.searchParams.delete("show");
+    } else {
+      url.searchParams.set("show", filter);
+    }
+    history.replaceState(null, "", url);
+  }
+
+  if (directory && group) {
+    group.hidden = false;
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => apply(button.dataset.filter ?? "all"));
+    });
+    apply(new URL(window.location.href).searchParams.get("show") ?? "all");
+  }
+</script>
+
+<style>
+  .intro {
+    padding: clamp(56px, 10vw, 112px) 0 clamp(28px, 4vw, 40px);
+    max-width: var(--col-narrow);
+  }
+
+  .intro h1 {
+    font-size: var(--step-4);
+    letter-spacing: -0.035em;
+    margin-bottom: 16px;
+  }
+
+  .intro p {
+    color: var(--ink-muted);
+    font-size: 1.0625rem;
+    max-width: 52ch;
+  }
+
+  .filter {
+    display: inline-flex;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--night-raised);
+  }
+
+  .filter[hidden] {
+    display: none;
+  }
+
+  .filter button {
+    font: 500 0.9375rem/1 var(--font-sans);
+    color: var(--ink-muted);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    padding: 9px 14px;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 8px;
+  }
+
+  .filter button span {
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .filter button:hover {
+    color: var(--ink);
+  }
+
+  .filter button[aria-pressed="true"] {
+    background: var(--night-high);
+    color: var(--ink);
+  }
+
+  .filter button[aria-pressed="true"] span {
+    color: var(--gold);
+  }
+
+  .family {
+    margin-top: clamp(48px, 7vw, 72px);
+  }
+
+  .family header {
+    display: grid;
+    gap: 6px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .family h2 {
+    font-size: var(--step-2);
+    scroll-margin-top: 24px;
+  }
+
+  .family header p {
+    color: var(--ink-muted);
+    font-size: 0.9375rem;
+  }
+
+  .directory[data-show="public"] :global(.project-row:not([data-status="public"])),
+  .directory[data-show="private"] :global(.project-row:not([data-status="private"])) {
+    display: none;
+  }
+
+  .directory[data-show="public"] .family:not(:has(:global([data-status="public"]))),
+  .directory[data-show="private"] .family:not(:has(:global([data-status="private"]))) {
+    display: none;
+  }
+</style>

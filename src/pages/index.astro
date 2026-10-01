@@ -1,28 +1,27 @@
 ---
 import FooterCta from "../components/FooterCta.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import Spectrum from "../components/Spectrum.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { families } from "../data/families";
 import { projects } from "../data/projects";
 
-const title = "oops-rs — a joyful Rust tool universe";
+const title = "oops-rs — Rust tools for agents, code, and the plumbing between";
 const description =
-  "Official website for the oops-rs GitHub organization: fast Rust tools for code intelligence, agents, localization, sandboxes, and the small infrastructure that makes real systems less miserable.";
+  "The oops-rs GitHub organization: Rust tools for coding agents, code intelligence, AI gateways, sandboxes, localization, and Apple tooling.";
 
-const pillars = [
+const principles = [
   {
-    number: "01",
-    title: "Tools that face real workflows",
-    body: "Built for use, not pitch decks — CI, code graphs, asset parsing, translators, gatekeepers, runtimes."
+    title: "Built for a real workflow",
+    body: "Every project started because something in CI, a codebase, or an agent loop was slow, brittle, or missing."
   },
   {
-    number: "02",
-    title: "Rust as the internal skeleton",
-    body: "Performance, control, strong types, and fewer runtime surprises. The surface can breathe because the internals are grounded."
+    title: "Rust underneath",
+    body: "Strong types and predictable performance in the core, so the surface can stay small and friendly."
   },
   {
-    number: "03",
-    title: "Small enough to be human",
-    body: "Even the weirder tools still explain themselves. You should land here curious, not confused."
+    title: "Small enough to explain",
+    body: "If a tool can't say what it does in one sentence, it isn't finished yet."
   }
 ];
 ---
@@ -33,83 +32,154 @@ const pillars = [
 
     <main>
       <section class="hero">
-        <p class="eyebrow fade-in">The oops-rs organization</p>
-        <h1 class="hero-title fade-in delay-1">
-          Rust tools with <em>confetti</em> in their bloodstream.
-        </h1>
-        <p class="hero__lede fade-in delay-2">
-          Sharp instruments for agents, code, localization, sandboxes, and the small
-          infrastructure spells that make real systems less miserable.
-        </p>
-        <div class="hero__actions fade-in delay-2">
-          <a class="button button--solid" href="/projects">
-            Browse projects <span class="arrow">→</span>
-          </a>
-          <a class="button button--ghost" href="https://github.com/oops-rs" target="_blank" rel="noreferrer">
-            Open GitHub <span class="arrow">↗</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="manifesto">
-        <p class="eyebrow">The feeling</p>
-        <h2>This is not a normal official website.</h2>
+        <h1>Rust tools for coding agents, codebases, and the plumbing between them.</h1>
         <p>
-          It is a bright machine hall. A launch bay. A place for tools that do serious work
-          without needing to dress like accountants.
-        </p>
-        <p>
-          The point is to let the energy of the tools show: exacting internals, playful
-          surfaces, and a bias toward shipping things that genuinely help.
+          {projects.length} projects across five families, from agent runtimes and code graphs to
+          AI gateways and Apple asset tooling. Pick a color to jump in.
         </p>
       </section>
 
-      <section class="constellation">
+      <Spectrum />
+
+      <section class="stack-section">
         <div class="section-heading">
-          <p class="eyebrow">Projects</p>
-          <h2>Everything currently in orbit.</h2>
+          <h2>The families</h2>
         </div>
-
-        <div class="project-list">
+        <ul class="families">
           {
-            projects.map((project) => (
-              <a
-                href={`/projects/${project.slug}`}
-                class:list={["project-row", project.status === "private" && "project-row--private"]}
-              >
-                <span class="project-row__name">{project.name}</span>
-                <span class="project-row__tagline">{project.tagline}</span>
-                <span class="project-row__meta">
-                  <span class="project-row__status">{project.status}</span>
-                  <span class="arrow">→</span>
-                </span>
-              </a>
+            families.map((family) => (
+              <li>
+                <h3>
+                  <a href={`/projects#${family.id}`}>{family.name}</a>
+                </h3>
+                <p>{family.blurb}</p>
+                <ul class="families__members">
+                  {family.projects.map((project) => (
+                    <li>
+                      <a
+                        class="project-name"
+                        href={`/projects/${project.slug}`}
+                        style={`--swatch: ${project.primaryColor}`}
+                      >
+                        {project.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
             ))
           }
-        </div>
+        </ul>
       </section>
 
-      <section class="pillars-section">
+      <section class="stack-section">
         <div class="section-heading">
-          <p class="eyebrow">What lives here</p>
-          <h2>Code intelligence, agent runtimes, localization machinery, boundary magic.</h2>
+          <h2>How we build</h2>
         </div>
-        <div class="pillars">
+        <ul class="principles">
           {
-            pillars.map((pillar) => (
-              <article>
-                <span class="pillar__number">{pillar.number}</span>
-                <div>
-                  <h3>{pillar.title}</h3>
-                  <p>{pillar.body}</p>
-                </div>
-              </article>
+            principles.map((principle) => (
+              <li>
+                <h3>{principle.title}</h3>
+                <p>{principle.body}</p>
+              </li>
             ))
           }
-        </div>
+        </ul>
       </section>
 
       <FooterCta />
     </main>
   </div>
 </BaseLayout>
+
+<style>
+  .hero {
+    padding: clamp(64px, 11vw, 128px) 0 clamp(40px, 6vw, 64px);
+    max-width: 780px;
+  }
+
+  .hero h1 {
+    font-size: var(--step-4);
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .hero p {
+    margin-top: 24px;
+    max-width: 52ch;
+    font-size: 1.125rem;
+    color: var(--ink-muted);
+  }
+
+  .families {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    column-gap: clamp(24px, 4vw, 48px);
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .families > li {
+    padding: 24px 0 28px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+
+  .families h3 {
+    font-size: var(--step-1);
+  }
+
+  .families h3 a:hover {
+    color: var(--gold);
+  }
+
+  .families > li > p {
+    color: var(--ink-muted);
+    font-size: 0.9375rem;
+  }
+
+  .families__members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-top: 10px;
+  }
+
+  .families__members a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.9375rem;
+  }
+
+  .families__members a::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--swatch);
+  }
+
+  .families__members a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(24px, 4vw, 48px);
+  }
+
+  .principles h3 {
+    font-size: var(--step-1);
+    margin-bottom: 8px;
+  }
+
+  .principles p {
+    color: var(--ink-muted);
+  }
+</style>

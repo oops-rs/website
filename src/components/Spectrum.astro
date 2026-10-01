@@ -1,0 +1,135 @@
+---
+import { families } from "../data/families";
+import { readableOn } from "../lib/color";
+
+let index = 0;
+const groups = families.map((family) => ({
+  ...family,
+  bars: family.projects.map((project) => ({
+    project,
+    order: index++,
+    ink: readableOn(project.primaryColor)
+  }))
+}));
+---
+
+<nav class="spectrum" aria-label="All projects by family">
+  {
+    groups.map((group) => (
+      <div class="spectrum__family" style={`flex-grow: ${group.bars.length}`}>
+        <ul class="spectrum__bars">
+          {group.bars.map(({ project, order, ink }) => (
+            <li>
+              <a
+                class="spectrum__bar"
+                href={`/projects/${project.slug}`}
+                style={`--bar: ${project.primaryColor}; --bar-ink: ${ink}; --order: ${order}`}
+              >
+                <span class="project-name">{project.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="spectrum__label" href={`/projects#${group.id}`}>
+          {group.name}
+        </a>
+      </div>
+    ))
+  }
+</nav>
+
+<style>
+  .spectrum {
+    display: flex;
+    gap: clamp(8px, 1.6vw, 18px);
+    align-items: stretch;
+  }
+
+  .spectrum__family {
+    flex-basis: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .spectrum__bars {
+    display: flex;
+    gap: 3px;
+    height: clamp(150px, 26vw, 260px);
+  }
+
+  .spectrum__bars li {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+  }
+
+  .spectrum__bar {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    background: var(--bar);
+    color: var(--bar-ink);
+    border-radius: 3px;
+    transform-origin: bottom;
+    animation: rise 520ms var(--ease) both;
+    animation-delay: calc(var(--order) * 28ms);
+    transition: opacity 160ms var(--ease);
+  }
+
+  .spectrum__bar span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: var(--step--1);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .spectrum:has(.spectrum__bar:hover, .spectrum__bar:focus-visible)
+    .spectrum__bar:not(:hover, :focus-visible) {
+    opacity: 0.35;
+  }
+
+  .spectrum__label {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    line-height: 1.3;
+    border-top: 1px solid var(--line-strong);
+    padding-top: 10px;
+  }
+
+  .spectrum__label:hover {
+    color: var(--ink);
+  }
+
+  @keyframes rise {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .spectrum {
+      flex-wrap: wrap;
+      row-gap: 24px;
+    }
+
+    .spectrum__family {
+      flex-basis: 100%;
+    }
+
+    .spectrum__bars {
+      height: 120px;
+    }
+
+    .spectrum__bars li {
+      flex: 0 1 56px;
+    }
+  }
+</style>

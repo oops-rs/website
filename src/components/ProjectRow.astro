@@ -1,0 +1,75 @@
+---
+import type { Project } from "../data/projects";
+
+type Props = {
+  project: Project;
+};
+
+const { project } = Astro.props;
+const isPrivate = project.status === "private";
+---
+
+<li class="project-row" data-status={project.status}>
+  <a href={`/projects/${project.slug}`} style={`--swatch: ${project.primaryColor}`}>
+    <span class="project-row__swatch" aria-hidden="true"></span>
+    <span class="project-row__name project-name">{project.name}</span>
+    <span class="project-row__tagline">{project.tagline}</span>
+    {isPrivate && <span class="project-row__private">Private</span>}
+  </a>
+</li>
+
+<style>
+  a {
+    display: grid;
+    grid-template-columns: 12px minmax(120px, 160px) 1fr auto;
+    align-items: baseline;
+    gap: 0 clamp(14px, 2.4vw, 28px);
+    padding: 18px 8px;
+    border-bottom: 1px solid var(--line);
+    transition: background 140ms var(--ease);
+  }
+
+  a:hover {
+    background: var(--night-raised);
+  }
+
+  .project-row__swatch {
+    align-self: center;
+    width: 12px;
+    height: 28px;
+    border-radius: 2px;
+    background: var(--swatch);
+  }
+
+  .project-row__name {
+    font-size: 1.0625rem;
+  }
+
+  .project-row__tagline {
+    color: var(--ink-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .project-row__private {
+    font-size: var(--step--1);
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 720px) {
+    a {
+      grid-template-columns: 12px 1fr auto;
+      row-gap: 4px;
+    }
+
+    .project-row__swatch {
+      grid-row: span 2;
+      height: 100%;
+    }
+
+    .project-row__tagline {
+      grid-column: 2 / -1;
+      grid-row: 2;
+    }
+  }
+</style>
